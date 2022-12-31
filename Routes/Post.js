@@ -3,6 +3,88 @@ const User = require('../Models/UserModel');
 const Post = require('../Models/PostModel');
 const cloudinary = require('../Cloudinary/Cloudinary');
 
+
+// get all the posts
+
+router.get('/posts', async (req, res) => {
+    try{
+
+        const posts = await Post.find();
+         
+        res.status(200).json({
+            message: 'sucess',
+            post: posts
+        });
+
+    } catch(e) {
+        res.status(400).json({
+            message: 'not fetched'
+        })
+    }
+})
+
+//get post by id
+
+router.get('/posts/:id', async (req, res) => {
+    try{
+
+        const posts = await Post.find({ userId: req.params.id });
+         
+        res.status(200).json({
+            message: 'sucess',
+            post: posts
+        });
+
+    } catch(e) {
+        res.status(400).json({
+            message: 'not fetched'
+        })
+    }
+})
+
+// change the data in post
+
+router.put('/posts/:id', async (req, res) => {
+    try{
+
+        const { description } = req.body;
+
+        const updatedPost = await Post.findByIdAndUpdate(req.params.id, { description: description }, { new: true });
+
+        res.status(200).json({
+            message: 'updated'
+        })
+
+
+    } catch(e) {
+        res.status(400).json({
+            message: 'not fetched'
+        })
+    }
+})
+
+// delete a post
+
+router.delete('/posts/:id', async (req, res) => {
+    try{
+
+        const { description } = req.body;
+
+        const updatedPost = await Post.findByIdAndDelete(req.params.id);
+
+        res.status(200).json({
+            message: 'deleted'
+        })
+        
+    } catch(e) {
+        res.status(400).json({
+            message: 'not fetched'
+        })
+    }
+})
+
+// post a post
+
 router.post('/posts', async (req, res) => {
     try{
         
@@ -49,6 +131,9 @@ router.post('/posts', async (req, res) => {
         })
     }
 })
+
+
+
 
 
 
